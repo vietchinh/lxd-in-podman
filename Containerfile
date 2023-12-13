@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER vietchinh
 
-RUN apk add --update --no-cache openrc lxc lxc-templates
+RUN apk add --update --no-cache openrc lxd
 
 VOLUME ["/var/lib/lxd"]
 
