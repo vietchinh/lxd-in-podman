@@ -1,7 +1,7 @@
 FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
-RUN dnf install dnf-plugins-core -y && dnf copr enable ganto/lxc4 && \
+RUN dnf install dnf-plugins-core systemd -y && dnf copr enable ganto/lxc4 -y && \
     dnf install lxd -y && \
     dnf clean all; \
     (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
