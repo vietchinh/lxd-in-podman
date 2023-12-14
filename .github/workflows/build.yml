@@ -19,6 +19,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
+          flavor: latest=true
       - name: Build Image
         id: build_image
         uses: redhat-actions/buildah-build@v2
