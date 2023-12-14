@@ -1,8 +1,12 @@
-name: Create and publish a Docker image
+name: Create and publish a Podman image
 
 on:
+  schedule:
+    - cron: "30 16 * * *"
   push:
     branches: ['main']
+    paths-ignore: # don't rebuild if only documentation has changed
+      - "**.md"
   workflow_dispatch:
 
 jobs:
