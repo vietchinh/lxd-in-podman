@@ -1,12 +1,13 @@
 FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
-RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm && \
-    dnf install dnf-plugins-core systemd iproute nano zfs -y && \
-    dnf copr enable ganto/lxc4 -y && \
+RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm
+RUN dnf install dnf-plugins-core systemd iproute nano zfs -y
+RUN dnf copr enable ganto/lxc4 -y && \
     dnf install lxd -y && \
-    dnf clean all;
-    (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+    dnf clean all
+
+RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
     rm -f /usr/lib/systemd/system/multi-user.target.wants/*;\
     rm -f /etc/systemd/system/*.wants/*;\
     rm -f /usr/lib/systemd/system/local-fs.target.wants/*; \
