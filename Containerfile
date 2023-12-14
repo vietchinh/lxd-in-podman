@@ -1,4 +1,4 @@
-FROM docker.io/almalinux/9-init:latest
+FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
 RUN dnf copr enable ganto/lxc4 && \
