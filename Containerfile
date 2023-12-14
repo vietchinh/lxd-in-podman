@@ -1,7 +1,7 @@
 FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
-RUN dnf install dnf-plugins-core systemd iproute -y
+RUN dnf install dnf-plugins-core systemd iproute iptables-nft nano -y
 RUN dnf copr enable ganto/lxc4 -y && \
     dnf install lxd -y && \
     dnf clean all
