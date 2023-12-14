@@ -2,7 +2,7 @@ FROM registry.fedoraproject.org/fedora-minimal:latest
 MAINTAINER vietchinh
 
 RUN microdnf install -y https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm && \
-    microdnf install dnf5-command(copr) systemd iproute nano zfs --setopt=install_weak_deps=False --nodocs -y && \
+    microdnf install 'dnf5-command(copr)' systemd iproute nano zfs --setopt=install_weak_deps=False --nodocs -y && \
     microdnf copr enable ganto/lxc4 -y && \
     microdnf install lxd --setopt=install_weak_deps=False --nodocs -y && \
     microdnf clean all
