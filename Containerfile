@@ -2,9 +2,9 @@ FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
 RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm
-RUN dnf install dnf-plugins-core systemd iproute nano zfs -y
+RUN dnf install dnf-plugins-core systemd iproute nano zfs --setopt=install_weak_deps=False --nodocs -y
 RUN dnf copr enable ganto/lxc4 -y && \
-    dnf install lxd -y && \
+    dnf install lxd --setopt=install_weak_deps=False --nodocs -y && \
     dnf clean all
 
 RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
