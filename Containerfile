@@ -2,7 +2,7 @@ FROM debian:stable-slim
 MAINTAINER vietchinh
 
 RUN apt-get update && \
-    apt-get install systemd init libpam-systemd iproute2 --assume-yes && \
+    apt-get install systemd init libpam-systemd iproute2 iptables --assume-yes && \
     apt-get install lxd --assume-yes && \
     apt-get clean; \
     (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
