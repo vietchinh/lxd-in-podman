@@ -1,7 +1,8 @@
 FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
-RUN dnf install dnf-plugins-core systemd iproute nano -y
+RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm
+RUN dnf install dnf-plugins-core systemd iproute nano zfs -y
 RUN dnf copr enable ganto/lxc4 -y && \
     dnf install lxd -y && \
     dnf clean all
