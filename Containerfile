@@ -1,10 +1,9 @@
-FROM debian:stable-slim
+FROM docker.io/almalinux/9-init:latest
 MAINTAINER vietchinh
 
-RUN apt-get update && \
-    apt-get install systemd init libpam-systemd iproute2 iptables nano wget --assume-yes && \
-    apt-get install lxd --assume-yes && \
-    apt-get clean; \
+RUN dnf copr enable ganto/lxc4 && \
+    dnf install lxd && \
+    dnf clean all; \
     (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
     rm -f /usr/lib/systemd/system/multi-user.target.wants/*;\
     rm -f /etc/systemd/system/*.wants/*;\
