@@ -32,7 +32,8 @@ jobs:
           image: ${{ github.repository }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          oci: true
+          oci: false
+          layers: true
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2
         id: push
