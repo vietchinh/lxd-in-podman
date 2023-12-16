@@ -35,7 +35,7 @@ jobs:
   build-and-push-image:
     needs: check
     runs-on: ubuntu-latest
-    if: needs.check.outputs.update == 'true' || github.event_name == 'workflow_dispatch
+    if: needs.check.outputs.update == 'true' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       packages: write
