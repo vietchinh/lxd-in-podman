@@ -18,22 +18,22 @@ jobs:
     outputs:
       update: ${{ steps.check.outputs.update }}
     steps:
-      - run: ls
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Check if there is an update available
         id: check
         run: |
-           ls
-#          grep=$(grep FROM ./Containerfile)
-#          url=${test:4}
-#          podman pull $url
-#          yesterday=$(date -d "yesterday" +"%s")
-#          image_creation_date=$(date -d $(podman image inspect $url | jq --raw-output .[].Created) +"%s")
-#
-#          if (( image_creation_date > yesterday )); then
-#              echo "update=true" >> $GITHUB_OUTPUT
-#          else
-#              echo "update=false" >> $GITHUB_OUTPUT
-#          fi
+          grep=$(grep FROM ./Containerfile)
+          url=${test:4}
+          podman pull $url
+          yesterday=$(date -d "yesterday" +"%s")
+          image_creation_date=$(date -d $(podman image inspect $url | jq --raw-output .[].Created) +"%s")
+          
+          if (( image_creation_date > yesterday )); then
+              echo "update=true" >> $GITHUB_OUTPUT
+          else
+              echo "update=false" >> $GITHUB_OUTPUT
+          fi
 
   build-and-push-image:
     needs: check
