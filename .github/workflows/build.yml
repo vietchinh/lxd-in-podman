@@ -20,7 +20,7 @@ jobs:
       - name: Check if there is an update available
         id: check
         run: |
-          grep=$(grep FROM ./Containerfile)
+          grep=$(grep FROM Containerfile)
           url=${test:4}
           podman pull $url
           yesterday=$(date -d "yesterday" +"%s")
