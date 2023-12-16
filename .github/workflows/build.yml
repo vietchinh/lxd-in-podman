@@ -17,7 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - run: ls
       - name: Check if there is an update available
         id: check
         run: |
