@@ -10,29 +10,46 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push-image:
+  check:
     runs-on: ubuntu-latest
+    outputs:
+      update: ${{ steps.check.outputs.update }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check if there is an update available
+        id: check
+        run: |
+          grep=$(grep FROM ./Containerfile)
+          url=${grep:4}
+          podman pull $url
+          yesterday=$(date -d "yesterday" +"%s")
+          image_creation_date=$(date -d $(podman image inspect $url | jq --raw-output .[].Created) +"%s")
+          
+          if (( image_creation_date > yesterday )); then
+              echo "update=true" >> $GITHUB_OUTPUT
+          else
+              echo "update=false" >> $GITHUB_OUTPUT
+          fi
+
+  build-and-push-image:
+    needs: check
+    runs-on: ubuntu-latest
+    if: needs.check.outputs.update == 'true'
     permissions:
       contents: read
       packages: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Check if update available
-        id: check
-        uses: lucacome/docker-image-update-checker@v1
-        with:
-          base-image: registry.fedoraproject.org/fedora-minimal:latest
-          image: ghcr.io/vietchinh/lxd-in-podman:latest
+
       - name: Extract metadata (tags, labels) for Docker
-        if: steps.check.outputs.needs-updating == 'true'
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
           flavor: latest=true
       - name: Build Image
-        if: steps.check.outputs.needs-updating == 'true'
         id: build_image
         uses: redhat-actions/buildah-build@v2
         with:
@@ -43,7 +60,6 @@ jobs:
           oci: false
           layers: true
       - name: Push To GHCR
-        if: steps.check.outputs.needs-updating == 'true'
         uses: redhat-actions/push-to-registry@v2
         id: push
         with:
