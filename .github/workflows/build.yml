@@ -27,11 +27,13 @@ jobs:
           yesterday=$(date -d "yesterday" +"%s")
           image_creation_date=$(date -d $(podman image inspect $url | jq --raw-output .[].Created) +"%s")
           
-          if (( image_creation_date > yesterday )); then
-              echo "update=true" >> $GITHUB_OUTPUT
-          else
-              echo "update=false" >> $GITHUB_OUTPUT
-          fi
+          echo "update=false" >> $GITHUB_OUTPUT
+
+#          if (( image_creation_date > yesterday )); then
+#              echo "update=true" >> $GITHUB_OUTPUT
+#          else
+#              echo "update=false" >> $GITHUB_OUTPUT
+#          fi
 
   build-and-push-image:
     needs: check
