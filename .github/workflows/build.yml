@@ -18,6 +18,7 @@ jobs:
     outputs:
       update: ${{ steps.check.outputs.update }}
     steps:
+      - run: ls
       - name: Check if there is an update available
         id: check
         run: |
