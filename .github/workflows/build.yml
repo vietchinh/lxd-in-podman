@@ -21,7 +21,7 @@ jobs:
       - name: Check if there is an update available
         id: check
         run: |
-          ls
+          echo ls
           grep=$(grep FROM ./Containerfile)
           url=${test:4}
           podman pull $url
