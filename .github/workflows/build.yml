@@ -12,9 +12,6 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
     outputs:
       update: ${{ steps.check.outputs.update }}
     steps:
