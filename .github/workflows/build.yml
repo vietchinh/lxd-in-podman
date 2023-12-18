@@ -57,7 +57,7 @@ jobs:
           image: ${{ github.repository }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          oci: false
+          oci: true
           layers: true
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2
@@ -70,3 +70,5 @@ jobs:
           password: ${{ github.token }}
           extra-args: |
             --disable-content-trust
+            --compression-format=zstd
+            --compression-level=22
