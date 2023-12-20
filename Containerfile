@@ -1,6 +1,8 @@
 FROM registry.fedoraproject.org/fedora-minimal:latest
 MAINTAINER vietchinh
 
+VOLUME ["/var/lib/lxd"]
+
 RUN microdnf install https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm 'dnf5-command(copr)' --setopt=install_weak_deps=False --nodocs -y && \
     microdnf copr enable ganto/lxc4 -y && \
     microdnf install systemd iproute nano zfs lxd dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
@@ -15,7 +17,5 @@ RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == sy
     rm -f /usr/lib/systemd/system/basic.target.wants/*; \
     rm -f /usr/lib/systemd/system/anaconda.target.wants/*; \
     systemctl enable lxd; systemctl enable dnf-automatic-install.timer
-
-VOLUME ["/var/lib/lxd"]
 
 CMD ["/sbin/init"]
