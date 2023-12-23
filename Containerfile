@@ -22,6 +22,4 @@ RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == sy
     rm -f /usr/lib/systemd/system/anaconda.target.wants/*; \
     systemctl enable lxd; systemctl enable dnf-automatic-install.timer
 
-
-
 CMD ["/sbin/init"]
