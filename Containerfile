@@ -8,6 +8,10 @@ RUN microdnf install https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "
     microdnf install systemd iproute nano zfs lxd dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
     microdnf clean all
 
+RUN echo "root:1000000:65536" >> /etc/subuid; \
+    echo "root:1000000:65536" >> /etc/subgid; \
+    source /etc/profile
+
 RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
     rm -f /usr/lib/systemd/system/multi-user.target.wants/*;\
     rm -f /etc/systemd/system/*.wants/*;\
@@ -17,5 +21,7 @@ RUN (cd /usr/lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == sy
     rm -f /usr/lib/systemd/system/basic.target.wants/*; \
     rm -f /usr/lib/systemd/system/anaconda.target.wants/*; \
     systemctl enable lxd; systemctl enable dnf-automatic-install.timer
+
+
 
 CMD ["/sbin/init"]
