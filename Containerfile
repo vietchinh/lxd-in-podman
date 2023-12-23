@@ -1,12 +1,12 @@
-FROM registry.fedoraproject.org/fedora-minimal:latest
+FROM registry.fedoraproject.org/fedora:latest
 MAINTAINER vietchinh
 
 VOLUME ["/var/lib/lxd"]
 
-RUN microdnf install https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm 'dnf5-command(copr)' --setopt=install_weak_deps=False --nodocs -y && \
-    microdnf copr enable ganto/lxc4 -y && \
-    microdnf install systemd iproute nano zfs lxd dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
-    microdnf clean all
+RUN dnf install https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm dnf-plugins-core --setopt=install_weak_deps=False --nodocs -y && \
+    dnf copr enable ganto/lxc4 -y && \
+    dnf install systemd iproute nano zfs lxd dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
+    dnf clean all
 
 RUN echo "root:1000000:65536" >> /etc/subuid; \
     echo "root:1000000:65536" >> /etc/subgid; \
