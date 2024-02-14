@@ -38,7 +38,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          tags: type=semver,pattern={{version}},value=${{ matrix.version }}
+          tags: type=semver,pattern={{version}},value=${{ matrix.packages.version }}
       - name: Install latest podman + buildah
         run: |
           sudo mkdir -p /etc/apt/keyrings
@@ -55,8 +55,8 @@ jobs:
         id: build_image
         uses: redhat-actions/buildah-build@v2
         env:
-          PACKAGE_NAME: ${{ matrix.name }}
-          PACKAGE_VERSION: ${{ matrix.version }}
+          PACKAGE_NAME: ${{ matrix.packages.name }}
+          PACKAGE_VERSION: ${{ matrix.packages.version }}
           FEDORA_VERSION: 39
         with:
           containerfiles: ./Containerfile
