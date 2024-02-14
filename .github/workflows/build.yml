@@ -38,7 +38,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          flavor: latest=true
+          tags: type=semver,pattern={{version}},value=${{ matrix.version }}
       - name: Install latest podman + buildah
         run: |
           sudo mkdir -p /etc/apt/keyrings
@@ -61,8 +61,8 @@ jobs:
         with:
           containerfiles: ./Containerfile
           image: ${{ github.repository }}
-          tags: latest ${{ matrix.name }}-${{ matrix.version }}
-          labels: ${{ matrix.name }}-${{ matrix.version }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           oci: true
           layers: true
       - name: Push To GHCR
