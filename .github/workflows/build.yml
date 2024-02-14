@@ -44,7 +44,6 @@ jobs:
             org.opencontainers.image.title=${{ matrix.packages.name }}-in-podman
           flavor: |
             latest=true
-            prefix=${{ matrix.packages.name }}-
       - name: Install latest podman + buildah
         run: |
           sudo mkdir -p /etc/apt/keyrings
