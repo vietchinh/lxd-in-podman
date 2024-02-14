@@ -75,16 +75,16 @@ jobs:
             PACKAGE_NAME=${{ matrix.packages.name }}
             PACKAGE_VERSION=${{ matrix.packages.version }}
             FEDORA_VERSION=39
-#      - name: Push To GHCR
-#        uses: redhat-actions/push-to-registry@v2
-#        id: push
-#        with:
-#          image: ${{ steps.build_image.outputs.image }}
-#          tags: ${{ steps.build_image.outputs.tags }}
-#          registry: ghcr.io/${{ github.repository_owner }}
-#          username: ${{ github.actor }}
-#          password: ${{ github.token }}
-#          extra-args: |
-#            --disable-content-trust
-#            --compression-format=zstd
-#            --compression-level=22
+      - name: Push To GHCR
+        uses: redhat-actions/push-to-registry@v2
+        id: push
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ghcr.io/${{ github.repository_owner }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          extra-args: |
+            --disable-content-trust
+            --compression-format=zstd
+            --compression-level=22
