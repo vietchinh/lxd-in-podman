@@ -5,6 +5,6 @@ create_matrix_object () {
 }
 
 merged_array=$(echo $(create_matrix_object "lxd" "https://raw.githubusercontent.com/ganto/copr-lxc4/master/lxd/lxd.spec") | jq ". + $(create_matrix_object "incus" "https://raw.githubusercontent.com/ganto/copr-lxc4/master/incus/incus.spec")")
-generated_matrix=$(echo {\"versions\":$merged_array} | jq -c .)
+generated_matrix=$(echo {\"packages\":$merged_array} | jq -c .)
 echo $generated_matrix
 echo "matrix=$generated_matrix" >> $GITHUB_OUTPUT
