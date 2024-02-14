@@ -40,7 +40,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: type=raw,value=${{ matrix.packages.version }}
           flavor: |
-            latest=auto
+            latest=${{ matrix.packages.name }} == "lxd"
             prefix=${{ matrix.packages.name }}-
       - name: Install latest podman + buildah
         run: |
