@@ -68,6 +68,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           oci: true
           layers: true
+          build-args: |
+            PACKAGE_NAME=${{ matrix.packages.name }}
+            PACKAGE_VERSION=${{ matrix.packages.version }}
+            FEDORA_VERSION=39
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2
         id: push
