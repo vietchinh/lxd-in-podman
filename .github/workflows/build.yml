@@ -65,7 +65,7 @@ jobs:
           FEDORA_VERSION: 39
         with:
           containerfiles: ./Containerfile
-          image: ${{ github.repository }}
+          image: ${{ matrix.packages.name }}-in-podman
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           oci: true
