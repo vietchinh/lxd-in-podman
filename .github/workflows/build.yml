@@ -15,11 +15,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - id: set-matrix
+        shell: bash
         run: |
-          generated_matrix=$((echo {\"packages\":[{ \"name\": \"lxd\", \"version\": && cat && echo }]}) <<< $(curl https://raw.githubusercontent.com/ganto/copr-lxc4/master/lxd/lxd.spec | grep -zPoh -m 1 -- "\d+.\d+-\d+.\d+\n" | head -1 | tr -d '\n' | tr -d '\0' | awk '{ print "\""$0"\""}') | jq -c .)
-          echo $generated_matrix
-          echo "matrix=$generated_matrix" >> $GITHUB_OUTPUT
+          bash ./.github/parse.sh
 
   build-and-push-image:
     needs: matrix-setup
@@ -39,9 +40,10 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: type=raw,value=${{ matrix.packages.version }}
+          labels: |
+            org.opencontainers.image.title=${{ matrix.packages.name }}-in-podman
           flavor: |
             latest=true
-            prefix=${{ matrix.packages.name }}-
       - name: Install latest podman + buildah
         run: |
           sudo mkdir -p /etc/apt/keyrings
