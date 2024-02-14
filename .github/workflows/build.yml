@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ matrix.packages.name }}-in-podman
           tags: type=raw,value=${{ matrix.packages.version }}
           labels: |
             org.opencontainers.image.title=${{ matrix.packages.name }}-in-podman
