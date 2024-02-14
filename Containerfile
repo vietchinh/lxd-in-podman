@@ -9,7 +9,7 @@ VOLUME ["/var/lib/lxd"]
 
 RUN dnf install https://zfsonlinux.org/fedora/zfs-release-2-4$(rpm --eval "%{dist}").noarch.rpm dnf-plugins-core --setopt=install_weak_deps=False --nodocs -y && \
     dnf copr enable ganto/lxc4 -y && \
-    dnf install systemd iproute nano zfs ${PACKAGE_NAME}-${PACKAGE_VERSION}.fc${FEDORA_VERSION} dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
+    dnf install systemd iproute nano zfs "${PACKAGE_NAME}-${PACKAGE_VERSION}.fc${FEDORA_VERSION}" dnf-automatic --setopt=install_weak_deps=False --nodocs -y && \
     dnf clean all
 
 RUN echo "root:1000000:65536" >> /etc/subuid; \
