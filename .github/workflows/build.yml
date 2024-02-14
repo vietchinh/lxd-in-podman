@@ -59,10 +59,6 @@ jobs:
       - name: Build Image
         id: build_image
         uses: redhat-actions/buildah-build@v2
-        env:
-          PACKAGE_NAME: ${{ matrix.packages.name }}
-          PACKAGE_VERSION: ${{ matrix.packages.version }}
-          FEDORA_VERSION: 39
         with:
           containerfiles: ./Containerfile
           image: ${{ matrix.packages.name }}-in-podman
