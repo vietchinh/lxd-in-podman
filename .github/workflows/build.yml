@@ -10,8 +10,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push-image:
+  matrix-setup:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          generated_matrix=$((echo {\"packages\":[{ \"name\": \"lxd\", \"version\": && cat && echo }]}) <<< $(curl https://raw.githubusercontent.com/ganto/copr-lxc4/master/lxd/lxd.spec | grep -zPoh -m 1 -- "\d+.\d+-\d+.\d+\n" | head -1 | tr -d '\n' | tr -d '\0' | awk '{ print "\""$0"\""}') | jq -c .)
+          echo $generated_matrix
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  build-and-push-image:
+    needs: matrix-setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.matrix-setup.outputs.matrix)}}
     permissions:
       contents: read
       packages: write
@@ -40,11 +54,15 @@ jobs:
       - name: Build Image
         id: build_image
         uses: redhat-actions/buildah-build@v2
+        env:
+          PACKAGE_NAME: ${{ matrix.name }}
+          PACKAGE_VERSION: ${{ matrix.version }}
+          FEDORA_VERSION: 39
         with:
           containerfiles: ./Containerfile
           image: ${{ github.repository }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: latest ${{ matrix.name }}-${{ matrix.version }}
+          labels: ${{ matrix.name }}-${{ matrix.version }}
           oci: true
           layers: true
       - name: Push To GHCR
