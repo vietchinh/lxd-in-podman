@@ -19,7 +19,8 @@ jobs:
         uses: actions/checkout@v4
       - id: set-matrix
         shell: bash
-        run: ./.github/parse.sh
+        run: |
+          bash ./.github/parse.sh
 
 #  build-and-push-image:
 #    needs: matrix-setup
